@@ -1,7 +1,6 @@
 <app-header (menuclicked) = "onMenuClicked($event)"></app-header>
 <div class="container">
   <div style="margin-top:1.5rem">
-      <app-recipes *ngIf="IsRecipeVisible"></app-recipes>
-      <app-shopping-list *ngIf="IsShoppingVisible"></app-shopping-list>
+    <router-outlet></router-outlet>
   </div>
 </div>
