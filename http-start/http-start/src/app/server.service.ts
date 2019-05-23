@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { map } from "rxjs/operators";
+import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
+import { map, catchError } from "rxjs/operators";
+import { throwError } from "rxjs";
 
 @Injectable()
 export class ServerService {
@@ -17,10 +18,23 @@ export class ServerService {
     }
 
     getServers() {
-        return this.http.get('https://angular7proj-beb0c.firebaseio.com/data.json')
-            .pipe(map((response: HttpResponse<any>) => {
-                const data = response;
-                return data;
-            }));
+        return this.http.get('https://angular7proj-beb0c.firebaseio.com')
+            .pipe(map(
+                (response) => {
+                    const data = response[Object.keys(response)[0]];
+                    
+                    for(const server of data) {
+                        server.name = 'Fetched ' + server.name; 
+                    }
+                    
+                    return data;
+                }), catchError(error => this.handleError(error))
+            );
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        console.log(error);
+
+        return throwError('Error ocurred');
     }
 }

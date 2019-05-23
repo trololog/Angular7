@@ -42,10 +42,11 @@ export class AppComponent {
 
   onGetServers() {
     this.serverService.getServers()
-      .subscribe((result) => {
-        console.log(result);
-      });
-      
+      .subscribe(
+        (servers: any[]) => this.servers = servers,
+        (error) => {
+          console.log(error);
+        });
   }
  
   private generateId() {
