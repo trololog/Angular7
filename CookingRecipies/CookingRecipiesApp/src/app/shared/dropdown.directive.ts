@@ -14,8 +14,9 @@ export class DropDownDirective {
     constructor(private elRef: ElementRef, private renderer: Renderer2) { }
 
     @HostListener('click') toogleOpen() {
-        this.isOpen = !this.isOpen;
         const dropDownMenu = this.elRef.nativeElement.childNodes[1];
+        this.isOpen = this.elRef.nativeElement.contains(event.target) ? !this.isOpen : false;
+
         if (this.isOpen) {
             this.renderer.addClass(dropDownMenu, 'show');
         } else {
