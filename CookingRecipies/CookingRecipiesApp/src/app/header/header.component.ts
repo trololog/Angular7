@@ -17,14 +17,10 @@ export class HeaderComponent {
     }
 
     onSaveData() {
-        this.dataStorageService.storeRecipes()
-            .subscribe((response: HttpResponse<any>) => {
-                console.log(response);
-            });
+        this.dataStorageService.storeRecipes();
     }
 
     onFetchData() {
-        this.dataStorageService.fetchRecipes();
-            
+      this.dataStorageService.fetchRecipes().subscribe();
     }
 }

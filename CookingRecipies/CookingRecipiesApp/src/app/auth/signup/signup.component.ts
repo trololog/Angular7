@@ -9,15 +9,23 @@ import { AuthService } from '../auth.service';
 })
 export class SignupComponent implements OnInit {
 
+  isLoginMode = true;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
-  onSignUp(form: NgForm) {
+  onSwitchMode() {
+    this.isLoginMode = !this.isLoginMode;
+  }
+
+  onSubmit(form: NgForm) {
     const email = form.value.email;
     const pwd = form.value.password;
 
     this.authService.signupUser(email,pwd);
+
+    form.reset();
   }
 }

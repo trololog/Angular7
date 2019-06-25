@@ -10,18 +10,10 @@ export class RecipeService {
 
     recipesChanged = new Subject<Recipe[]>();
 
-    private recipes: Recipe[] = [
-        new Recipe('Test recipe',
-        'Test',
-        'https://hips.hearstapps.com/del.h-cdn.co/assets/18/06/1600x800/landscape-1517928338-delish-mongolian-ramen-and-meatballs-still001.jpg?resize=640:*',
-        [
-            new Ingredient('Meat', 1),
-            new Ingredient('Noodles', 40)
-        ])
-    ];
+    private recipes: Recipe[] = [];
 
     getRecipes() {
-        return [...this.recipes]; // this.recipes.slice()
+        return [...this.recipes.slice()]; // this.recipes.slice()
     }
 
     getRecipe(index: number) {
