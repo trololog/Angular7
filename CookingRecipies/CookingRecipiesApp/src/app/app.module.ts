@@ -22,7 +22,7 @@ import { RecipeService } from './recipes/recipe.service';
 import { DataStorageService } from './shared/data-storage.service';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthService } from './auth/auth.service';
-import { SignInComponent } from './auth/signin/signin.component';
+import { LoaderSpinnerComponent } from './shared/loader-spinner/loader-spinner.component';
 
 
 @NgModule({
@@ -42,7 +42,7 @@ import { SignInComponent } from './auth/signin/signin.component';
     DropDownDirective,
     RecipeEditComponent,
     SignupComponent,
-    SignInComponent
+    LoaderSpinnerComponent
   ],
   imports: [
     BrowserModule,
