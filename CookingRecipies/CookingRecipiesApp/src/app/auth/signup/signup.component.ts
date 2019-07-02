@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +16,7 @@ export class SignupComponent implements OnInit {
   isLoading = false;
   error:string = null;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -38,13 +40,14 @@ export class SignupComponent implements OnInit {
     if(this.isLoginMode) {
       authObs = this.authService.login(email, pwd);
     } else {
-      authObs = this.authService.signupUser(email,pwd);
+      authObs = this.authService.signupUser(email, pwd);
     }
 
     authObs.subscribe(
       resData => {
         console.log(resData);
         this.isLoading = false;
+        this.router.navigate(['/recipes']);
       },
       errorMessage => {
         console.log(errorMessage);
