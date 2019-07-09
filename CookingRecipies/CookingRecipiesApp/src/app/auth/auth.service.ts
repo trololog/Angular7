@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user = new Subject<User>();
+  user = new BehaviorSubject<User>(null);
 
 
   url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyAvk2miI6BYXzpSTT2rZ72k3HR5mqIMBNc';
@@ -33,7 +33,8 @@ export class AuthService {
       password: password,
       returnSecureToken: true
     })
-    .pipe(catchError(this.handleError));
+    .pipe(catchError(this.handleError),
+    tap(resData => this.handleAuthentication(resData.email, resData.localId, resData.idToken, +resData.expiresIn)));
   }
 
   private handleAuthentication(email: string, userId: string, token: string, expiresIn: number) {
