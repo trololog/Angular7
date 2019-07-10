@@ -55,7 +55,7 @@ import { AuthInterceptorService } from './auth/auth-interceptor';
   providers: [ShoppingListService,
     RecipeService,
     DataStorageService,
-    AuthService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService }],
+    AuthService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi:true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

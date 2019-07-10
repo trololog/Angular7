@@ -19,7 +19,7 @@
         </ul>
         <ul class="navbar-nav mr-sm-0">
             <li class="nav-item" *ngIf="isAuth">
-              <a class="nav-link"  style="cursor:pointer">Logout</a>
+              <a class="nav-link"  style="cursor:pointer" (click)="onLogout()">Logout</a>
             </li>
             <li class="nav-item dropdown" appDropdown *ngIf="isAuth">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
