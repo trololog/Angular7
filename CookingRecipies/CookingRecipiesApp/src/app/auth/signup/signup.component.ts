@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { AlertComponent } from 'src/app/shared/alert/alert.component';
+import { PlaceholderDirective } from 'src/app/shared/placeholder/placeholder.directive';
 
 
 @Component({
@@ -10,15 +12,24 @@ import { Router } from '@angular/router';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
 
   isLoginMode = false;
   isLoading = false;
   error:string = null;
+  @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective;
+  private closeSub: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router,
+    private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
   }
 
   onSwitchMode() {
@@ -53,9 +64,29 @@ export class SignupComponent implements OnInit {
         console.log(errorMessage);
         this.error = errorMessage;
         this.isLoading = false;
+        this.showErrorAlert(errorMessage);
       }
     );
 
     form.reset();
+  }
+
+  onHandleError() {
+    this.error = null;
+  }
+
+  private showErrorAlert(error: string) {
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+    componentRef.instance.message = error;
+    this.closeSub = componentRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 }
