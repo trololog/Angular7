@@ -17,8 +17,6 @@ describe('CoursesCardListComponent', () => {
   let componentFixture: ComponentFixture<CoursesCardListComponent>;
   let debugElement: DebugElement;
 
-  componentFixture
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
         imports: [CoursesModule]
@@ -27,6 +25,7 @@ describe('CoursesCardListComponent', () => {
     .then(() => {
         componentFixture = TestBed.createComponent(CoursesCardListComponent);
         component = componentFixture.componentInstance;
+        debugElement = componentFixture.debugElement;
     });
   }));
 
