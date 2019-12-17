@@ -32,7 +32,7 @@ describe('HomeComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         CoursesModule,
-        NoopAnimationsModule 
+        NoopAnimationsModule
       ],
       providers: [{provide: CoursesService, useValue: coursesServiceSpy}]
     }).compileComponents()
@@ -68,7 +68,7 @@ describe('HomeComponent', () => {
       .returnValue(of(advancedCourses));
 
     componentFixture.detectChanges();
-    
+
     const tabs = debugElement.queryAll(By.css(".mat-tab-label"));
 
     expect(tabs.length).toEqual(1, "Unexpected number of tabs");
@@ -85,7 +85,7 @@ describe('HomeComponent', () => {
   });
 
 
-  it("should display advanced courses when tab clicked", (done: DoneFn) => {
+  it("should display advanced courses when tab clicked", fakeAsync(() => {
 
     coursesService.findAllCourses.and.returnValue(of(setupCourses()));
 
@@ -97,17 +97,35 @@ describe('HomeComponent', () => {
 
     componentFixture.detectChanges();
 
-    setTimeout(() => {
+    flush();
+
+    const cardTitles = debugElement.queryAll(By.css(".mat-card-title"));
+
+    expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles");
+
+    expect(cardTitles[0].nativeElement.textContent).toContain("Angular Security Course");
+  }));
+
+  it("should display advanced courses when tab clicked-async", async(() => {
+
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+
+    componentFixture.detectChanges();
+
+    const tabs = debugElement.queryAll(By.css(".mat-tab-label"));
+
+    click(tabs[1]);
+
+    componentFixture.detectChanges();
+
+    componentFixture.whenStable().then(() => {
       const cardTitles = debugElement.queryAll(By.css(".mat-card-title"));
 
       expect(cardTitles.length).toBeGreaterThan(0, "Could not find card titles");
-  
+
       expect(cardTitles[0].nativeElement.textContent).toContain("Angular Security Course");
-
-      done();
-    },500);
-  });
-
+    });
+  }));
 });
 
 
